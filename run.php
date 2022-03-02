@@ -358,7 +358,6 @@ while(true){
 	}
 	$left = explode('/',explode('<p class="lh-1 mb-1 font-weight-bold">',$r1)[3])[0];
 	echo "\r                \r";
-	if($left>=1){
 		echo w("Trying Bypass ",'k');
 		$csrf = explode('">',explode('_token_name" id="token" value="',$r1)[1])[0];
 		$token = explode('">',explode('name="token" value="',$r1)[1])[0];
@@ -398,10 +397,6 @@ while(true){
 				echo "\r                \r";
 			}
 		}
-	}else{
-		echo w("Faucet habis\n","m");print l();
-		goto menu;
-	}
 }
 ptc:
 echo w("1 >","m")." Manual\n";
@@ -419,32 +414,10 @@ fie:
 while(true){
 	$r1 = _gf();
 	if(preg_match('/Firewall/',$r1)){
-		echo "\r                \r";
-		echo m."Firewall detect ".p.$tipe.m.", pls Open web!";
-		$r2 = gfirewall();
-		$tipe = explode('"',explode('<input type="hidden" name="captchaType" value="',$r2)[1])[0];//recaptchav2
-		$csrf = explode('"',explode('name="csrf_token_name" value="',$r2)[1])[0];
-		sleep(5);
+		echo m."Firewall detect , pls Open web!";
+		sleep(10);
 		echo "\r                                         \r";
-		if($tipe=="solvemedia"){
-			$ca = p($solv,a[6]);
-			file_put_contents("img.png",q($ca,a[6]));
-			$respon = n("img.png","im.png");
-			if(file_exists("img.png")){unlink("img.png");}
-			if(file_exists("im.png")){unlink("im.png");}
-			$data = ["adcopy_response"=>$respon,"adcopy_challenge"=>$ca,"captchaType"=>"solvemedia","csrf_token_name"=>$csrf];
-		}elseif($tipe=="recaptchav2" || $tipe=="hcaptcha"){
-			goto fie;
-		}else{
-			goto fie;
-		}
-		$r3=pfirewall($data);
-		if(_gd()["balance"] == ""){}else{
-			echo w("Firewall ~> ","m").w($tipe,"p").w(" Success","h");
-			echo "\n";
-			sleep(5);
-		}
-		goto faucet;
+		goto fie;
 	}
 	$r2 = gptc();
 	$id = explode("'",explode("/view/",$r2)[$nom])[0];
@@ -511,6 +484,12 @@ while(true){
 auto:
 while(true){
 	$r1=gauto();
+	if(preg_match('/Firewall/',$r1)){
+		echo m."Firewall detect , pls Open web!";
+		sleep(10);
+		echo "\r                                         \r";
+		goto auto;
+	}
 	if(preg_match("/You don't have enough energy/",$r1)){
 		echo w("You don't have enough energy","m")."\n";print l();goto menu;
 	}
@@ -533,6 +512,12 @@ while(true){
 wheel:
 while(true){
 	$r = gwheel();
+	if(preg_match('/Firewall/',$r)){
+		echo m."Firewall detect , pls Open web!";
+		sleep(10);
+		echo "\r                                         \r";
+		goto wheel;
+	}
 	$tm = e($r,'<b id="minute">','</b>',1);
 	$ts = e($r,'<b id="second">','</b>',1);
 	if($tm){
@@ -550,7 +535,6 @@ while(true){
 	}
 	
 	$left = e($r,'<p class="lh-1 mb-1 font-weight-bold">','/',3);
-	if($left>=1){
 		$token = e($r,'_token_name" id="token" value="','">',1);
 		$b = explode('rel=\"',$r);
 		$b1 = explode('\">',$b[1])[0];
@@ -586,13 +570,15 @@ while(true){
 				echo "\r                          \r";
 			}
 		}
-	}else{
-		echo w("Wheel of fortune habis\n","m");print l();
-		goto menu;
-	}
 }
 aciv:
 $r1=gaciv();
+if(preg_match('/Firewall/',$r1)){
+	echo m."Firewall detect , pls Open web!";
+	sleep(10);
+	echo "\r                                         \r";
+	goto aciv;
+}
 $csrf=explode('"',explode('_token_name" value="',$r1)[1])[0];
 $misi=explode('<tr>',$r1);
 for($x=2;$x<count($misi);$x++){
@@ -633,6 +619,12 @@ goto aciv;
 
 withdraw:
 $r1=gwithdraw();
+if(preg_match('/Firewall/',$r1)){
+	echo m."Firewall detect , pls Open web!";
+	sleep(10);
+	echo "\r                                         \r";
+	goto withdraw;
+}
 $csrf=explode('"',explode('_token_name" value="',$r1)[1])[0];
 
 $rad=explode('<div class="card-radio">',$r1);
